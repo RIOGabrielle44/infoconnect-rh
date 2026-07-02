@@ -1,0 +1,18 @@
+{
+  "name": "InfoConnect RH",
+  "short_name": "InfoConnect",
+  "description": "Application RH avec Supabase",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
