@@ -248,7 +248,7 @@ export default function App() {
   return (
     <div className="app">
       <aside className="sidebar">
-        <div className="brand"><div className="logo">RH</div><div><h1>InfoConnect RH</h1><p>{profile?.full_name || session.user.email} · {isAdmin ? "Admin" : "Salarié"}</p></div></div>
+        <div className="brand"><div className="logo">RH SAE</div><div><h1>InfoConnect RH</h1><p>{profile?.full_name || session.user.email} · {isAdmin ? "Admin" : "Salarié"}</p></div></div>
         <nav className="channels">
           <button className={activeChannel === "tous" ? "channel selected" : "channel"} onClick={() => setActiveChannel("tous")}><span className="dot dark">⌂</span><span><strong>Tous les canaux</strong><small>Fil complet</small></span></button>
           {channels.map((channel) => <button key={channel.id} className={activeChannel === channel.id ? "channel selected" : "channel"} onClick={() => setActiveChannel(channel.id)}><span className="dot" style={{ background: channel.color }}>#</span><span><strong>{channel.title}</strong><small>{channel.description || "Canal interne"}</small></span></button>)}
