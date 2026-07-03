@@ -1,5 +1,5 @@
 {
-  "name": "InfoConnect RH",
+  "name": "InfoConnect SAE RH",
   "short_name": "InfoConnect",
   "description": "Application RH avec Supabase",
   "start_url": "/",
@@ -9,9 +9,9 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/SATYS SAE.jpg",
+      "sizes": "11,9 Ko",
+      "type": "Fichier JPG",
       "purpose": "any maskable"
     }
   ]
