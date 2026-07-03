@@ -229,7 +229,7 @@ export default function App() {
       <main className="auth-page">
         <section className="auth-card">
           <div className="logo big">RH</div>
-          <h1>InfoConnect RH</h1>
+          <h1>InfoConnect RH SAE</h1>
           <p>Connectez-vous pour accéder aux canaux d'information internes.</p>
           <form onSubmit={signInOrUp} className="auth-form">
             {authMode === "signup" && <input value={authForm.fullName} onChange={(e) => setAuthForm({ ...authForm, fullName: e.target.value })} placeholder="Nom complet" />}
@@ -260,7 +260,7 @@ export default function App() {
       </aside>
 
       <main className="main">
-        <header className="topbar"><div><p className="eyebrow">Production Supabase</p><h2>Communication interne mobile</h2></div><div className="actions">{isAdmin && <button className="primary" onClick={() => setComposerOpen(true)}>+ Nouvelle publication</button>}</div></header>
+        <header className="topbar"><div><h2>Communication interne mobile</h2></div><div className="actions">{isAdmin && <button className="primary" onClick={() => setComposerOpen(true)}>+ Nouvelle publication</button>}</div></header>
         <section className="stats"><Metric label="Vues" value={stats.views} emoji="👁️"/><Metric label="Réactions" value={stats.reactions} emoji="👍"/><Metric label="Commentaires" value={stats.comments} emoji="💬"/><Metric label="Canaux" value={stats.channels} emoji="📣"/></section>
         <div className="layout">
           <section className="feed">
