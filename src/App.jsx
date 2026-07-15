@@ -287,7 +287,8 @@ async function deletePost(postId) {
             {visiblePosts.length === 0 ? <div className="empty"><h3>Aucune publication</h3><p>Créez du contenu depuis le mode administrateur.</p></div> : visiblePosts.map((post) => <PostCard key={post.id} post={post} channel={channels.find((c) => c.id === post.channel_id)} selected={selectedPost?.id === post.id} onSelect={() => selectPost(post)} onReact={() => toggleReaction(post.id)} />)}
           </section>
           <aside className="detail">
-            {selectedPost && <PostDetail post={selectedPost} channel={selectedChannel} comments={selectedPost.comments || []} onReact={() => toggleReaction(selectedPost.id)} onVote={vote} getSignedUrl={getSignedUrl} commentText={commentText} setCommentText={setCommentText} addComment={addComment} />}
+            {selectedPost && <PostDetail post={selectedPost} channel={selectedChannel} comments={selectedPost.comments || []} onReact={() => toggleReaction(selectedPost.id)} onVote={vote} getSignedUrl={getSignedUrl} commentText={commentText} setCommentText={setCommentText} addComment={addComment} isAdmin={isAdmin}
+  deletePost={deletePost} />}
           </aside>
         </div>
       </main>
@@ -303,10 +304,32 @@ async function deletePost(postId) {
 function Metric({ label, value, emoji }) { return <div className="metric"><span>{emoji}</span><div><small>{label}</small><strong>{value}</strong></div></div>; }
 function PostCard({ post, channel, selected, onSelect, onReact }) { return <article className={selected ? "post selected-post" : "post"} onClick={onSelect}><div className="post-icon" style={{ background: channel?.color || "#475569" }}>{formatEmoji[post.format]}</div><div className="post-content"><div className="post-meta"><span>{post.format}</span><span>{channel?.title}</span>{post.pinned && <strong>Épinglé</strong>}</div><h3>{post.title}</h3><p>{post.body}</p><div className="post-stats"><span>{post.view_count || 0} vues</span><button onClick={(e) => { e.stopPropagation(); onReact(); }}>👍 {post.reaction_count || 0}</button><span>💬 {post.comment_count || 0}</span><span>{new Date(post.created_at).toLocaleDateString("fr-FR")}</span></div></div></article>; }
 
-function PostDetail({ post, channel, comments, onReact, onVote, getSignedUrl, commentText, setCommentText, addComment }) {
+function PostDetail({ post, channel, comments, onReact, onVote, getSignedUrl, commentText, setCommentText, addComment, isAdmin, deletePost }) {
   const [url, setUrl] = useState(null);
   useEffect(() => { setUrl(null); if (post.file_path) getSignedUrl(post.file_path).then(setUrl); }, [post.id, post.file_path]);
-  return <article className="detail-card"><div className="detail-head"><div><span className="badge" style={{ borderColor: channel?.color }}>{channel?.title || "Canal"} · {post.format}</span><h3>{post.title}</h3><p>{new Date(post.created_at).toLocaleString("fr-FR")}</p></div>{post.pinned && <span className="pin">Épinglé</span>}</div><FormatPreview post={post} url={url}/><p className="body-text">{post.body}</p>{post.poll_question && <Poll post={post} onVote={onVote}/>}<div className="detail-actions"><button className="ghost" onClick={onReact}>👍 Réagir</button><button className="ghost" onClick={() => document.getElementById("comment-input")?.focus()}>💬 Participer</button></div><section className="comments"><h4>Commentaires & questions</h4>{comments.length === 0 && <p className="empty-comment">Aucun commentaire pour le moment.</p>}{comments.map((comment) => <div className="comment" key={comment.id}><strong>{comment.full_name || "Salarié"}</strong><p>{comment.body}</p></div>)}<div className="comment-form"><input id="comment-input" value={commentText} onChange={(e) => setCommentText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addComment()} placeholder="Répondre ou poser une question..."/><button className="primary" onClick={addComment}>Publier</button></div></section></article>;
+  return <article className="detail-card"><div className="detail-head"><div><span className="badge" style={{ borderColor: channel?.color }}>{channel?.title || "Canal"} · {post.format}</span><h3>{post.title}</h3><p>{new Date(post.created_at).toLocaleString("fr-FR")}</p></div>{post.pinned && <span className="pin">Épinglé</span>}</div><FormatPreview post={post} url={url}/><p className="body-text">{post.body}</p>{post.poll_question && <Poll post={post} onVote={onVote}/>}
+<div className="detail-actions">
+  <button className="ghost" onClick={onReact}>
+    👍 Réagir
+  </button>
+
+  <button
+    className="ghost"
+    onClick={() => document.getElementById("comment-input")?.focus()}
+  >
+    💬 Participer
+  </button>
+
+  {isAdmin && (
+    <button
+      className="danger"
+      onClick={() => deletePost(post.id)}
+    >
+      🗑️ Supprimer
+    </button>
+  )}
+</div>
+<section className="comments"><h4>Commentaires & questions</h4>{comments.length === 0 && <p className="empty-comment">Aucun commentaire pour le moment.</p>}{comments.map((comment) => <div className="comment" key={comment.id}><strong>{comment.full_name || "Salarié"}</strong><p>{comment.body}</p></div>)}<div className="comment-form"><input id="comment-input" value={commentText} onChange={(e) => setCommentText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addComment()} placeholder="Répondre ou poser une question..."/><button className="primary" onClick={addComment}>Publier</button></div></section></article>;
 }
 
 function FormatPreview({ post, url }) {
