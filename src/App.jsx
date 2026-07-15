@@ -125,7 +125,26 @@ export default function App() {
     }
     setLoading(false);
   }
+async function deletePost(postId) {
+  const confirmed = window.confirm(
+    "Voulez-vous vraiment supprimer cette publication ?"
+  );
 
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", postId);
+
+  if (error) {
+    alert("Erreur lors de la suppression");
+    return;
+  }
+
+  setSelectedPostId(null);
+  loadData();
+}
   async function signOut() {
     await supabase.auth.signOut();
   }
