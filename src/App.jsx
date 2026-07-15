@@ -146,6 +146,26 @@ async function deletePost(postId) {
   setSelectedId(null);
   loadData();
 }
+  async function deleteComment(commentId) {
+  const confirmed = window.confirm(
+    "Voulez-vous vraiment supprimer ce commentaire ?"
+  );
+
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("comments")
+    .delete()
+    .eq("id", commentId);
+
+  if (error) {
+    notify(error.message);
+    return;
+  }
+
+  notify("Commentaire supprimé");
+  loadData();
+}
   function editPost(post) {
   setEditingPost(post);
 
