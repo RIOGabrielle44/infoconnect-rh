@@ -27,6 +27,7 @@ export default function App() {
   const [channelOpen, setChannelOpen] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [file, setFile] = useState(null);
+  const [editingPost, setEditingPost] = useState(null);
   const [channelForm, setChannelForm] = useState({ title: "", description: "", color: COLORS[0] });
   const [postForm, setPostForm] = useState({
     channel_id: "",
@@ -144,6 +145,23 @@ async function deletePost(postId) {
 
   setSelectedId(null);
   loadData();
+}
+  function editPost(post) {
+  setEditingPost(post);
+
+  setPostForm({
+    channel_id: post.channel_id,
+    title: post.title,
+    body: post.body,
+    format: post.format,
+    pinned: post.pinned,
+    poll_question: post.poll_question || "",
+    poll_options: Array.isArray(post.poll_options)
+      ? post.poll_options.join("\n")
+      : ""
+  });
+
+  setComposerOpen(true);
 }
   async function signOut() {
     await supabase.auth.signOut();
@@ -328,6 +346,16 @@ function PostDetail({ post, channel, comments, onReact, onVote, getSignedUrl, co
       🗑️ Supprimer
     </button>
   )}
+  
+{isAdmin && (
+  <button
+    className="ghost"
+    onClick={() => editPost(post)}
+  >
+    ✏️ Modifier
+  </button>
+)}
+
 </div>
 <section className="comments"><h4>Commentaires & questions</h4>{comments.length === 0 && <p className="empty-comment">Aucun commentaire pour le moment.</p>}{comments.map((comment) => <div className="comment" key={comment.id}><strong>{comment.full_name || "Salarié"}</strong><p>{comment.body}</p></div>)}<div className="comment-form"><input id="comment-input" value={commentText} onChange={(e) => setCommentText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && addComment()} placeholder="Répondre ou poser une question..."/><button className="primary" onClick={addComment}>Publier</button></div></section></article>;
 }
