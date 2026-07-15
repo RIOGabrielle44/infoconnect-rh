@@ -142,7 +142,7 @@ async function deletePost(postId) {
     return;
   }
 
-  setSelectedPostId(null);
+  setSelectedId(null);
   loadData();
 }
   async function signOut() {
@@ -299,7 +299,7 @@ async function deletePost(postId) {
       {toast && <div className="toast">{toast}</div>}
     </div>
   );
-
+}
   
 function Metric({ label, value, emoji }) { return <div className="metric"><span>{emoji}</span><div><small>{label}</small><strong>{value}</strong></div></div>; }
 function PostCard({ post, channel, selected, onSelect, onReact }) { return <article className={selected ? "post selected-post" : "post"} onClick={onSelect}><div className="post-icon" style={{ background: channel?.color || "#475569" }}>{formatEmoji[post.format]}</div><div className="post-content"><div className="post-meta"><span>{post.format}</span><span>{channel?.title}</span>{post.pinned && <strong>Épinglé</strong>}</div><h3>{post.title}</h3><p>{post.body}</p><div className="post-stats"><span>{post.view_count || 0} vues</span><button onClick={(e) => { e.stopPropagation(); onReact(); }}>👍 {post.reaction_count || 0}</button><span>💬 {post.comment_count || 0}</span><span>{new Date(post.created_at).toLocaleDateString("fr-FR")}</span></div></div></article>; }
